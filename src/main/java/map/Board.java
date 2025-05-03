@@ -1,6 +1,9 @@
 package map;
 
-import core.Game;
+import P2P.GameP2P;
+import com.raylib.Raylib;
+import core.Main;
+
 import java.io.*;
 import java.util.*;
 
@@ -9,11 +12,11 @@ import static com.raylib.Raylib.DrawTexture;
 
 public class Board {
     private Terrain[][] map;
-    private final Game game;
+    private final GameP2P gameP2P;
     private static final Map<String, Terrain> TERRAIN_MAP = createTerrainMap();
 
-    public Board(Game game) {
-        this.game = game;
+    public Board(GameP2P gameP2P) {
+        this.gameP2P = gameP2P;
         loadMap();
     }
 
@@ -21,8 +24,16 @@ public class Board {
         return map;
     }
 
-    public void setMap(String terrain,int x,int y) {
-        map[x][y] = TERRAIN_MAP.getOrDefault(terrain, new Terrain(TerrainEnum.GRASS));
+    public void setMap(Terrain[][] map) {
+        this.map = map;
+    }
+
+    public void setTerrain(String terrain, int x, int y) {
+        map[x][y] = TERRAIN_MAP.getOrDefault(terrain, new Terrain(TerrainEnum.GRASS, Raylib::LoadTexture));
+    }
+
+    public Terrain getTerrain(int x,int y) {
+        return map[x/32][y/32];
     }
 
     private static Map<String, Terrain> createTerrainMap() {
@@ -43,13 +54,13 @@ public class Board {
                             .replace("FOREST", "Forest")
                             .replace("MOUNTAIN", "Mountain")
                             .replace("STREET", "Street"),
-                    new Terrain(terrainEnum));
+                    new Terrain(terrainEnum, Raylib::LoadTexture));
         }
         return map;
     }
 
     public void loadMap(){
-        List<String[]> data = readCSV(game.getMapPath());
+        List<String[]> data = readCSV(Main.getMapPath());
         map = buildMap(data);
     }
 
@@ -63,10 +74,9 @@ public class Board {
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                data[i][j] = TERRAIN_MAP.getOrDefault(csv.get(i)[j], new Terrain(TerrainEnum.GRASS));
+                data[i][j] = TERRAIN_MAP.getOrDefault(csv.get(i)[j], new Terrain(TerrainEnum.GRASS, Raylib::LoadTexture));
             }
         }
-
 
         return data;
     }
