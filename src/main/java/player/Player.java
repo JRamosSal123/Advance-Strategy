@@ -1,66 +1,86 @@
 package player;
 
-
-import core.Game;
+import units.Structure;
+import units.Troop;
 import units.Unit;
 import units.UnitEnum;
 import utils.AnimationState;
 import java.util.ArrayList;
 import java.util.List;
-import com.raylib.Raylib.Color;
+
 import com.raylib.Raylib;
 import com.raylib.Raylib.Vector2;
+import utils.ColorUtils;
+import utils.TextureLoader;
+
 import static com.raylib.Raylib.LoadTexture;
 
 public class Player {
-    private Game game;
     private List<Unit> units = new ArrayList<>();
-    private final Color color;
+    private final ColorUtils color;
+    private final TextureLoader loader;
 
-    public Player(Color color) {
+    public Player(ColorUtils color, TextureLoader loader) {
         this.color = color;
+        this.loader = loader;
     }
 
     public List<Unit> getUnits() {
         return units;
     }
 
-    public Color getColor() {
+    public ColorUtils getColor() {
         return color;
     }
 
     public void drawUnits(List<Unit> units) {
         for (Unit unit : units) {
-            unit.drawUnit(getColor());
+            unit.draw(getColor(), unit.getLife());
         }
     }
 
-    public void loadUnits() {
-        for(int i = 5; i<8;i++){
-            Unit unit = new Unit(i+1, UnitEnum.SOLDIER, 10, i*32, 192);
-            loadTexturesBase(unit);
-            loadTexturesBase(unit);
-            unit.setCurrentState(AnimationState.IDLE_RIGHT); // por defecto
-            units.add(unit);
-        }
-        for (int i = 0; i < units.size(); i++) {
-            units.get(i).setID(i);
-            i++;
-        }
+    public void loadUnitsPlayer() {
+        Troop unit1 = new Troop(UnitEnum.SOLDIER, 10, 3*32, 13*32);
+        loadTexturesBase(unit1);
+        unit1.setCurrentState(AnimationState.IDLE_RIGHT);
+        units.add(unit1);
+
+        Troop unit2 = new Troop(UnitEnum.SOLDIER, 10, 4*32, 12*32);
+        loadTexturesBase(unit2);
+        unit2.setCurrentState(AnimationState.IDLE_RIGHT);
+        units.add(unit2);
+
+        Troop unit3 = new Troop(UnitEnum.SOLDIER, 10, 5*32, 13*32);
+        loadTexturesBase(unit3);
+        unit3.setCurrentState(AnimationState.IDLE_RIGHT);
+        units.add(unit3);
+
+        Structure structure = new Structure(UnitEnum.STRUCTURE, 10, 4*32,13*32);
+        loadTexturesBase(structure);
+        structure.setCurrentState(AnimationState.UP);
+        units.add(structure);
     }
 
-    public void loadUnits1() {
-        for(int i = 0; i<4;i++){
-            Unit unit = new Unit(i+1, UnitEnum.SOLDIER, 10, 576, i*64);
-            loadTexturesBase(unit);
-            loadTexturesBase(unit);
-            unit.setCurrentState(AnimationState.IDLE_LEFT); // por defecto
-            units.add(unit);
-        }
-        for (int i = 0; i < units.size(); i++) {
-            units.get(i).setID(i);
-            i++;
-        }
+    public void loadUnitsOpponent() {
+        Troop unit1 = new Troop(UnitEnum.SOLDIER, 10, 17*32, 32);
+        loadTexturesBase(unit1);
+        unit1.setCurrentState(AnimationState.IDLE_RIGHT);
+        units.add(unit1);
+
+        Troop unit2 = new Troop(UnitEnum.SOLDIER, 10, 18*32, 2*32);
+        loadTexturesBase(unit2);
+        unit2.setCurrentState(AnimationState.IDLE_RIGHT);
+        units.add(unit2);
+
+        Troop unit3 = new Troop(UnitEnum.SOLDIER, 10, 19*32, 32);
+        loadTexturesBase(unit3);
+        unit3.setCurrentState(AnimationState.IDLE_RIGHT);
+        units.add(unit3);
+
+        Structure structure = new Structure(UnitEnum.STRUCTURE, 10, 18*32,32);
+        loadTexturesBase(structure);
+        structure.setCurrentState(AnimationState.UP); // por defecto
+        units.add(structure);
     }
 
     public void loadTexturesBase(Unit unit) {
@@ -72,8 +92,8 @@ public class Player {
                         + "/" + state.name().toLowerCase()
                         + "/" + state.name().toLowerCase() +  "_" + i;
 
-                framesBase[i] = LoadTexture(path + ".png");
-                framesColor[i] = LoadTexture(path + "_G.png");
+                framesBase[i] = loader.load(path + ".png");
+                framesColor[i] = loader.load(path + "_G.png");
             }
             unit.setAnimationBase(state, framesBase);
             unit.setAnimationColor(state, framesColor);
@@ -92,5 +112,18 @@ public class Player {
             }
         }
         return null;
+    }
+
+    public void clearDeathUnit() {
+        units.removeIf(unit -> unit.getLife() <= 0);
+    }
+
+    public boolean isLoser() {
+        for (Unit unit : units) {
+            if (unit instanceof Structure) {
+                return false;
+            }
+        }
+        return true;
     }
 }

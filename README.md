@@ -7,6 +7,28 @@ Para poder ejecutar el archivo ejecutable, es necesario contar con los siguiente
 * 📁 La carpeta `JRE` (incluida en el repositorio como `JRE.zip`; debe descomprimirse antes de ejecutar).
 * 📁 La carpeta `assets`.
 
+## 🌐 Ejecución de la conexión P2P
+
+Advance-Strategy permite partidas multijugador entre dos usuarios mediante una conexión **peer-to-peer (P2P)**. Para establecer la conexión correctamente, sigue estos pasos:
+
+1. **Inicia el juego** y selecciona la opción **"2 jugadores"** desde el menú principal.
+
+2. A continuación, elige uno de los siguientes roles:
+
+   ### 🖥️ Si actúas como **Host**:
+   - Selecciona un **puerto disponible** en tu equipo (se recomienda el puerto `8888`, o uno entre `1024` y `65535`).
+   - Pulsa el botón **"Conectarse"**.
+   - Espera a que el jugador cliente se conecte.
+
+   ### 🌐 Si actúas como **Cliente**:
+   - Pide al Host que te proporcione:
+     - Su **dirección IP** (puede obtenerla ejecutando `ipconfig` en el símbolo del sistema de Windows).
+     - El **puerto** que ha seleccionado.
+   - Introduce esos datos en el juego.
+   - Pulsa el botón **"Conectarse"** para establecer la conexión.
+
+> ✅ Una vez ambos jugadores estén conectados, la partida comenzará de forma automática.
+
 ## 🛠️ Construido con
 
 Para desarrollar el proyecto he usado las siguientes herramientas
