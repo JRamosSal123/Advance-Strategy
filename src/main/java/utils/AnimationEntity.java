@@ -4,7 +4,7 @@ import com.raylib.Raylib.*;
 import java.util.HashMap;
 
 public abstract class AnimationEntity implements Animatable {
-    protected Texture[] frames;
+    //protected Texture[] frames;
     protected HashMap<AnimationState, Texture[]> animationsBase = new HashMap<>();
     protected HashMap<AnimationState, Texture[]> animationsColor = new HashMap<>();
     protected AnimationState state = AnimationState.IDLE_RIGHT;

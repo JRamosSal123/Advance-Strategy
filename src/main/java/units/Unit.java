@@ -6,11 +6,13 @@ import utils.ColorUtils;
 
 public abstract class Unit extends AnimationEntity{
 
+    private int id;
     protected int life;
     protected Vector2 position;
     private final UnitEnum unitEnum;
 
-    public Unit(UnitEnum unit,int life, int x, int y) {
+    public Unit(int id, UnitEnum unit,int life, int x, int y) {
+        this.id = id;
         this.unitEnum = unit;
         this.life = life;
         this.position = new Vector2();
@@ -18,6 +20,9 @@ public abstract class Unit extends AnimationEntity{
         this.position.y(y);
     }
 
+    public int getId() {
+        return id;
+    }
     public int getLife() {
         return life;
     }
@@ -40,6 +45,11 @@ public abstract class Unit extends AnimationEntity{
     public UnitEnum getUnitEnum() {return unitEnum;}
 
     public abstract void draw(ColorUtils color, int life);
+
+    public Unit cloneUnit() {
+        throw new UnsupportedOperationException("This should be implemented in subclasses");
+    }
+
 }
 
 

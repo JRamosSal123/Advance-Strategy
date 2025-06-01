@@ -1,12 +1,12 @@
 package core;
 
+import IA.GameIA;
 import P2P.GameP2P;
 import ui.*;
 
 import java.io.IOException;
 import java.util.Objects;
 
-import static com.raylib.Colors.*;
 import static com.raylib.Raylib.*;
 import static com.raylib.Raylib.SetTargetFPS;
 
@@ -17,8 +17,10 @@ public class Main {
     private static final int fps = 60;
     private static final String mapPath = "assets/Map.CSV";
     private static final String musicPath = "assets/sound/music.mp3";
+    private static final String iconPath = "assets/screen/icon.png";
     private static String ip;
     private static int port;
+    private static int difficulty = 0;
 
 
     public static void main(String[] args) throws IOException {
@@ -47,30 +49,45 @@ public class Main {
 
                 case MAIN:
 
-                    MainScreen test = new MainScreen();
-                    currentScreen = test.run();
+                    MainScreen mainScreen = new MainScreen();
+                    currentScreen = mainScreen.run();
                     break;
 
                 case DIFFICULTY_IA:
                     //Draw difficulty menu IA
-                    System.out.println("DIFFICULTY_IA");
-                    currentScreen = Screen.SPlASH;
+                    ConfigAIScreen aiScreen = new ConfigAIScreen();
+                    difficulty = aiScreen.runScreen();
+                    if(difficulty == 0){
+                        currentScreen = Screen.MAIN;
+                    }
+                    else{
+                        currentScreen = Screen.GAME_IA;
+                    }
+                    break;
+
+                case GAME_IA:
+                    if(difficulty != 0){
+                        GameIA gameIA = new GameIA(difficulty);
+                        gameIA.main();
+                    }
+
+                    currentScreen = Screen.MAIN;
                     break;
 
                 case CONFIG_P2P:
                     //Draw config menu
-                    ConfigP2PScreen ConfigP2PScreen = new ConfigP2PScreen();
-                    ConfigP2PScreen.runScreen();
-                    ip = ConfigP2PScreen.getIp();
-                    port = ConfigP2PScreen.getPort();
+                    ConfigP2PScreen p2pScreen = new ConfigP2PScreen();
+                    p2pScreen.runScreen();
+                    ip = p2pScreen.getIp();
+                    port = p2pScreen.getPort();
                     if(Objects.equals(ip, "" ) && port == -1){
                         currentScreen = Screen.MAIN;
                     }else {
-                        currentScreen = Screen.GAME;
+                        currentScreen = Screen.GAME_P2P;
                     }
                     break;
 
-                case GAME:
+                case GAME_P2P:
                     GameP2P gameP2P;
                     if(Objects.equals(ip, "")){
                         gameP2P = new GameP2P(port);
@@ -86,10 +103,8 @@ public class Main {
                 default:
                     break;
             }
-            //drawFrame();
         }
         unloadAndClose();
-
     }
 
     public static int getScreenWidth() {
@@ -110,21 +125,13 @@ public class Main {
 
     private static void createWindow() {
         InitWindow(screenWidth, screenHeight, gameTitle);
+        SetWindowIcon(LoadImage(iconPath));
         SetConfigFlags(FLAG_MSAA_4X_HINT);
         InitAudioDevice();
         SetTargetFPS(fps);
     }
 
-    private static void drawFrame(){
-        ClearBackground(RAYWHITE);
-        BeginDrawing();
-        //Draws Here
-
-        EndDrawing();
-    }
-
     private static void unloadAndClose() {
-        //UnloadMusicStream(music);
 
         CloseAudioDevice();
         CloseWindow();

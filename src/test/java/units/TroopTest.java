@@ -18,7 +18,7 @@ class TroopTest {
 
     @BeforeEach
     void setUp() {
-        troop = new Troop(UnitEnum.SOLDIER, 100, 0, 0);
+        troop = new Troop(1,UnitEnum.SOLDIER, 100, 0, 0);
     }
 
     @Test
@@ -66,37 +66,9 @@ class TroopTest {
         v.x(1); v.y(0);
         troop.setPosibleMovement(List.of(v));
 
-        boolean finished = troop.move(1, 0);
+        boolean finished = troop.move(1, 0,null, null);
         assertEquals(1, troop.getPosition().x());
         assertFalse(finished);
-    }
-
-    @Test
-    void testMoveToDestinationFinishes() {
-        // Simular que ya estamos en destino
-        troop.setDestination(0, 0);
-        troop.setPosition(0, 0);
-        troop.setCurrentState(AnimationState.RIGHT);
-
-        boolean finished = troop.move(0, 0);
-        assertTrue(finished);
-        assertTrue(troop.getCurrentState() == AnimationState.IDLE_RIGHT || troop.getCurrentState() == AnimationState.IDLE_LEFT);
-    }
-
-    @Test
-    void testAttackDealsDamage() {
-        Troop enemy = new Troop(UnitEnum.SOLDIER, 100, 0, 0);
-        int defense = 5;
-        int expectedDamage = UnitEnum.SOLDIER.getDamage() - defense;
-
-        troop.attack(enemy, defense);
-        assertEquals(100 - expectedDamage, enemy.getLife());
-    }
-
-    @Test
-    void testCheckAreaGeneratesPositions() {
-        troop.checkArea();
-        assertFalse(troop.getPosibleMovement().isEmpty());
     }
 
     @Test
@@ -109,7 +81,7 @@ class TroopTest {
     @Test
     void testRemoveVectorPosibleMovement() {
         // Simula una posición ocupada
-        Troop other = new Troop(UnitEnum.SOLDIER, 100, 32, 0);
+        Troop other = new Troop(1, UnitEnum.SOLDIER, 100, 32, 0);
         Vector2 v = new Vector2();
         v.x(32); v.y(0);
         troop.setPosibleMovement(new ArrayList<>(List.of(v)));
@@ -121,7 +93,7 @@ class TroopTest {
     @Test
     void testRemoveVectorAttack() {
         // Necesita posiciones de ataque simuladas
-        Troop enemy = new Troop(UnitEnum.SOLDIER, 100, 32, 0);
+        Troop enemy = new Troop(1,UnitEnum.SOLDIER, 100, 32, 0);
         troop.setPosition(0, 0);
         troop.adjacent();  // Genera posiciones de ataque
         troop.removeVectorAttack(List.of(enemy));

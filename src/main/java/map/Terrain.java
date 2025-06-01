@@ -13,6 +13,7 @@ public class Terrain {
     public Terrain(TerrainEnum terrain, TextureLoader loader) {
         this.terrain = terrain;
         this.loader = loader;
+        //this.texture = LoadTexture(terrain.getPath() + terrain.getName() + ".png");
         this.texture = loader.load(terrain.getPath() + terrain.getName() + ".png");
     }
     public TerrainEnum getTerrainEnum() {

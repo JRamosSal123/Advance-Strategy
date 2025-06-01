@@ -1,6 +1,6 @@
 package ui;
 
-import utils.ColorUtils;
+import utils.ColorEnum;
 import utils.RectangleUtils;
 import utils.ScreenUtils;
 
@@ -9,15 +9,15 @@ import java.util.Objects;
 import static com.raylib.Raylib.*;
 
 public class ConfigP2PScreen {
-    private final ColorUtils backgroundTop = new ColorUtils(65, 65, 65);
-    private final ColorUtils backgroundBottom = new ColorUtils(40, 40, 40);
-    private final ColorUtils colorWhite = new ColorUtils(255, 255, 255);
-    private final ColorUtils greyTop = new ColorUtils(65, 65, 65);
-    private final ColorUtils greyBottom = new ColorUtils(40, 40, 40);
-    private final ColorUtils greyLight = new ColorUtils(200, 200, 200);
-    private final ColorUtils greyDark = new ColorUtils(150, 150, 150);
-    private final ColorUtils blueLight = new ColorUtils(19, 66, 141);
-    private final ColorUtils blueDark = new ColorUtils(9, 48, 110);
+    //private final ColorUtils backgroundTop = new ColorUtils(65, 65, 65);
+    //private final ColorUtils backgroundBottom = new ColorUtils(40, 40, 40);
+    //private final ColorUtils colorWhite = new ColorUtils(255, 255, 255);
+    //private final ColorUtils greyTop = new ColorUtils(65, 65, 65);
+    //private final ColorUtils greyBottom = new ColorUtils(40, 40, 40);
+    //private final ColorUtils greyLight = new ColorUtils(200, 200, 200);
+    //private final ColorUtils greyDark = new ColorUtils(150, 150, 150);
+    //private final ColorUtils blueLight = new ColorUtils(19, 66, 141);
+    //private final ColorUtils blueDark = new ColorUtils(9, 48, 110);
 
     private final Button hostButton;
     private final Button clientButton;
@@ -40,37 +40,37 @@ public class ConfigP2PScreen {
     public ConfigP2PScreen() {
         hostButton = new Button(
             new RectangleUtils(135,107,210,210),
-            new ColorUtils(19, 66, 141),
-            new ColorUtils(9, 48, 110),
+            ColorEnum.BLUE_LIGHT.getColorUtils(),
+            ColorEnum.BLUE_DARK.getColorUtils(),
             "HOST",
             50,
-            colorWhite
+            ColorEnum.WHITE.getColorUtils()
         );
 
         clientButton = new Button(
             new RectangleUtils(455,107,210,210),
-            new ColorUtils(19, 66, 141),
-            new ColorUtils(9, 48, 110),
+            ColorEnum.BLUE_LIGHT.getColorUtils(),
+            ColorEnum.BLUE_DARK.getColorUtils(),
             "CLIENT",
             50,
-            colorWhite
+            ColorEnum.WHITE.getColorUtils()
         );
 
         connectButton = new Button(
             new RectangleUtils(395,385,130,60),
-            new ColorUtils(200, 200, 200),
-            new ColorUtils(150, 150, 150),
+            ColorEnum.GREY_LIGHT.getColorUtils(),
+            ColorEnum.GREY_DARK.getColorUtils(),
             "Connect",
             30,
-            colorWhite
+            ColorEnum.WHITE.getColorUtils()
         );
 
         exitButton = new Button(
-                new RectangleUtils(10,10,40,40),
-                new ColorUtils(19, 66, 141),
-                new ColorUtils(9, 48, 110),
-                LoadTexture("assets/screen/arrow.png"),
-                colorWhite
+            new RectangleUtils(10,10,40,40),
+            ColorEnum.BLUE_LIGHT.getColorUtils(),
+            ColorEnum.BLUE_DARK.getColorUtils(),
+            LoadTexture("assets/screen/arrow.png"),
+            ColorEnum.WHITE.getColorUtils()
         );
 
 
@@ -104,8 +104,8 @@ public class ConfigP2PScreen {
 
         if (!WindowShouldClose() && isFinished) {
 
-            ScreenUtils.startFrame(greyTop, greyBottom);
-            DrawText("Esperando que el contrincante se conecte", 40, 210, 30, colorWhite.toRaylibColor());
+            ScreenUtils.startFrame(ColorEnum.GREY_TOP.getColorUtils(), ColorEnum.GREY_BOTTOM.getColorUtils());
+            DrawText("Esperando que el contrincante se conecte", 40, 210, 30, ColorEnum.WHITE.getColorUtils().toRaylibColor());
             ScreenUtils.endFrame();
         }
     }
@@ -127,8 +127,8 @@ public class ConfigP2PScreen {
             isFinished = true;
         }
 
-        ScreenUtils.startFrame(greyTop, greyBottom);
-        DrawText("Seleccione el rol con el que quiere conectarse", 40, 350, 30, colorWhite.toRaylibColor());
+        ScreenUtils.startFrame(ColorEnum.GREY_TOP.getColorUtils(), ColorEnum.GREY_BOTTOM.getColorUtils());
+        DrawText("Seleccione el rol con el que quiere conectarse", 40, 350, 30, ColorEnum.WHITE.getColorUtils().toRaylibColor());
 
         hostButton.draw();
         clientButton.draw();
@@ -154,7 +154,7 @@ public class ConfigP2PScreen {
         int key = GetKeyPressed();
         readPortInput(key);
 
-        ScreenUtils.startFrame(greyTop, greyBottom);
+        ScreenUtils.startFrame(ColorEnum.GREY_TOP.getColorUtils(), ColorEnum.GREY_BOTTOM.getColorUtils());
         drawPortInput();
         ScreenUtils.endFrame();
     }
@@ -189,7 +189,7 @@ public class ConfigP2PScreen {
         readIpInput(key);
         readPortInput(key);
 
-        ScreenUtils.startFrame(greyTop, greyBottom);
+        ScreenUtils.startFrame(ColorEnum.GREY_TOP.getColorUtils(), ColorEnum.GREY_BOTTOM.getColorUtils());
         drawIpAndPortInput();
         ScreenUtils.endFrame();
     }
@@ -258,16 +258,16 @@ public class ConfigP2PScreen {
 
     private void drawPortInput() {
         if(isEditingPort){
-            DrawRectangleRounded(rectPortField.toRaylibRectangle(), 0.5f, 100, greyDark.toRaylibColor());
+            DrawRectangleRounded(rectPortField.toRaylibRectangle(), 0.5f, 100, ColorEnum.GREY_DARK.getColorUtils().toRaylibColor());
         }
         else {
-            DrawRectangleRounded(rectPortField.toRaylibRectangle(), 0.5f, 100, greyLight.toRaylibColor());
+            DrawRectangleRounded(rectPortField.toRaylibRectangle(), 0.5f, 100, ColorEnum.GREY_LIGHT.getColorUtils().toRaylibColor());
         }
 
-        DrawText("Puerto:", 100, 145, 50, colorWhite.toRaylibColor());
-        DrawText(inputPort, 335, 145, 50, colorWhite.toRaylibColor());
+        DrawText("Puerto:", 100, 145, 50, ColorEnum.WHITE.getColorUtils().toRaylibColor());
+        DrawText(inputPort, 335, 145, 50, ColorEnum.WHITE.getColorUtils().toRaylibColor());
 
-        DrawText(statusMessage, 30, 270, 20, colorWhite.toRaylibColor());
+        DrawText(statusMessage, 30, 270, 20, ColorEnum.WHITE.getColorUtils().toRaylibColor());
 
         connectButton.draw();
         exitButton.draw();
@@ -276,26 +276,26 @@ public class ConfigP2PScreen {
 
     private void drawIpAndPortInput() {
         if(isEditingIp){
-            DrawRectangleRounded(rectIpField.toRaylibRectangle(), 0.5f, 100, greyDark.toRaylibColor());
+            DrawRectangleRounded(rectIpField.toRaylibRectangle(), 0.5f, 100, ColorEnum.GREY_DARK.getColorUtils().toRaylibColor());
         }
         else {
-            DrawRectangleRounded(rectIpField.toRaylibRectangle(), 0.5f, 100, greyLight.toRaylibColor());
+            DrawRectangleRounded(rectIpField.toRaylibRectangle(), 0.5f, 100, ColorEnum.GREY_LIGHT.getColorUtils().toRaylibColor());
         }
 
-        DrawText("IP:", 100, 50, 50, colorWhite.toRaylibColor());
-        DrawText(inputIpAddress, 335, 50, 50, colorWhite.toRaylibColor());
+        DrawText("IP:", 100, 50, 50, ColorEnum.WHITE.getColorUtils().toRaylibColor());
+        DrawText(inputIpAddress, 335, 50, 50, ColorEnum.WHITE.getColorUtils().toRaylibColor());
 
         if(isEditingPort){
-            DrawRectangleRounded(rectPortField.toRaylibRectangle(), 0.5f, 100, greyDark.toRaylibColor());
+            DrawRectangleRounded(rectPortField.toRaylibRectangle(), 0.5f, 100, ColorEnum.GREY_DARK.getColorUtils().toRaylibColor());
         }
         else {
-            DrawRectangleRounded(rectPortField.toRaylibRectangle(), 0.5f, 100, greyLight.toRaylibColor());
+            DrawRectangleRounded(rectPortField.toRaylibRectangle(), 0.5f, 100, ColorEnum.GREY_LIGHT.getColorUtils().toRaylibColor());
         }
 
-        DrawText("Puerto:", 100, 145, 50, colorWhite.toRaylibColor());
-        DrawText(inputPort, 335, 145, 50, colorWhite.toRaylibColor());
+        DrawText("Puerto:", 100, 145, 50, ColorEnum.WHITE.getColorUtils().toRaylibColor());
+        DrawText(inputPort, 335, 145, 50, ColorEnum.WHITE.getColorUtils().toRaylibColor());
 
-        DrawText(statusMessage, 30, 270, 20, colorWhite.toRaylibColor());
+        DrawText(statusMessage, 30, 270, 20, ColorEnum.WHITE.getColorUtils().toRaylibColor());
 
         connectButton.draw();
         exitButton.draw();

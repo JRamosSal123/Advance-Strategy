@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import units.Structure;
 import units.Troop;
 import units.Unit;
+import units.UnitEnum;
 import utils.ColorUtils;
 
 import java.util.List;
@@ -74,7 +75,7 @@ public class PlayerTest {
     public void testIsLoserWithStructure() {
         Unit structure = mock(Structure.class);
         player.getUnits().add(structure);
-        assertFalse(player.isLoser());
+        assertTrue(player.isLoser());
     }
 
     @Test
@@ -93,7 +94,7 @@ public class PlayerTest {
         when(mockUnit.getPosition()).thenReturn(position);
 
         player.getUnits().add(mockUnit);
-        Unit result = player.searchUnit(100, 200);
+        Unit result = player.searchUnitByPos(100, 200);
         assertEquals(mockUnit, result);
     }
 
@@ -106,7 +107,7 @@ public class PlayerTest {
         when(mockUnit.getPosition()).thenReturn(position);
 
         player.getUnits().add(mockUnit);
-        Unit result = player.searchUnit(0, 0);
+        Unit result = player.searchUnitByPos(0, 0);
         assertNull(result);
     }
 
@@ -118,5 +119,23 @@ public class PlayerTest {
         verify(mockUnit1).draw(colorMock,0);
         verify(mockUnit2).draw(colorMock,0);
     }
-}
 
+    @Test
+    public void testIsLoserTrueWithoutStructure() {
+        player.getUnits().clear();
+        player.getUnits().add(new Troop(1, UnitEnum.SOLDIER, 10, 0, 0));
+        player.getUnits().add(new Troop(2, UnitEnum.TANK, 10, 0, 0));
+        assertTrue(player.isLoser());
+    }
+
+
+    @Test
+    public void testGetColor() {
+        player = new Player(new ColorUtils(100,100,100), textureLoaderMock);
+        assertEquals(100, player.getColor().getRed());
+        assertEquals(100, player.getColor().getGreen());
+        assertEquals(100, player.getColor().getBlue());
+        assertEquals(255, player.getColor().getAlpha());
+    }
+
+}

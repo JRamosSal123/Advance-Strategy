@@ -1,7 +1,6 @@
 package utils;
 
 import core.Main;
-
 import static com.raylib.Raylib.*;
 
 public class ScreenUtils {
