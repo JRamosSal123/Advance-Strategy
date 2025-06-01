@@ -7,13 +7,10 @@ import units.UnitEnum;
 import utils.AnimationState;
 import java.util.ArrayList;
 import java.util.List;
-
 import com.raylib.Raylib;
 import com.raylib.Raylib.Vector2;
 import utils.ColorUtils;
 import utils.TextureLoader;
-
-import static com.raylib.Raylib.LoadTexture;
 
 public class Player {
     private List<Unit> units = new ArrayList<>();
@@ -28,7 +25,6 @@ public class Player {
     public List<Unit> getUnits() {
         return units;
     }
-
     public ColorUtils getColor() {
         return color;
     }
@@ -40,46 +36,46 @@ public class Player {
     }
 
     public void loadUnitsPlayer() {
-        Troop unit1 = new Troop(UnitEnum.SOLDIER, 10, 3*32, 13*32);
+        Troop unit1 = new Troop(1, UnitEnum.SOLDIER, 10, 3*32, 13*32);
         loadTexturesBase(unit1);
         unit1.setCurrentState(AnimationState.IDLE_RIGHT);
         units.add(unit1);
 
-        Troop unit2 = new Troop(UnitEnum.SOLDIER, 10, 4*32, 12*32);
+        Troop unit2 = new Troop(2, UnitEnum.ARTILLERY, 10, 4*32, 12*32);
         loadTexturesBase(unit2);
         unit2.setCurrentState(AnimationState.IDLE_RIGHT);
         units.add(unit2);
 
-        Troop unit3 = new Troop(UnitEnum.SOLDIER, 10, 5*32, 13*32);
+        Troop unit3 = new Troop(3, UnitEnum.TANK, 10, 5*32, 13*32);
         loadTexturesBase(unit3);
         unit3.setCurrentState(AnimationState.IDLE_RIGHT);
         units.add(unit3);
 
-        Structure structure = new Structure(UnitEnum.STRUCTURE, 10, 4*32,13*32);
+        Structure structure = new Structure(0,UnitEnum.STRUCTURE, 10, 4*32,13*32);
         loadTexturesBase(structure);
         structure.setCurrentState(AnimationState.UP);
         units.add(structure);
     }
 
     public void loadUnitsOpponent() {
-        Troop unit1 = new Troop(UnitEnum.SOLDIER, 10, 17*32, 32);
+        Troop unit1 = new Troop(5, UnitEnum.SOLDIER, 10, 17*32, 32);
         loadTexturesBase(unit1);
         unit1.setCurrentState(AnimationState.IDLE_RIGHT);
         units.add(unit1);
 
-        Troop unit2 = new Troop(UnitEnum.SOLDIER, 10, 18*32, 2*32);
+        Troop unit2 = new Troop(6, UnitEnum.ARTILLERY, 10, 18*32, 2*32);
         loadTexturesBase(unit2);
         unit2.setCurrentState(AnimationState.IDLE_RIGHT);
         units.add(unit2);
 
-        Troop unit3 = new Troop(UnitEnum.SOLDIER, 10, 19*32, 32);
+        Troop unit3 = new Troop(7, UnitEnum.TANK, 10, 19*32, 32);
         loadTexturesBase(unit3);
         unit3.setCurrentState(AnimationState.IDLE_RIGHT);
         units.add(unit3);
 
-        Structure structure = new Structure(UnitEnum.STRUCTURE, 10, 18*32,32);
+        Structure structure = new Structure(0,UnitEnum.STRUCTURE, 10, 18*32,32);
         loadTexturesBase(structure);
-        structure.setCurrentState(AnimationState.UP); // por defecto
+        structure.setCurrentState(AnimationState.UP);
         units.add(structure);
     }
 
@@ -100,7 +96,7 @@ public class Player {
         }
     }
 
-    public Unit searchUnit(int x, int y) {
+    public Unit searchUnitByPos(int x, int y) {
         for (Unit unit : units) {
 
             Raylib.Vector2 pos = new Vector2();
@@ -114,16 +110,38 @@ public class Player {
         return null;
     }
 
+    public Unit searchUnitById(int id) {
+        for (Unit unit : units) {
+            if (unit.getId() == id) {
+                return unit;
+            }
+        }
+        return null;
+    }
+
     public void clearDeathUnit() {
         units.removeIf(unit -> unit.getLife() <= 0);
     }
 
     public boolean isLoser() {
+        if(units.size() == 1) return true;
         for (Unit unit : units) {
             if (unit instanceof Structure) {
                 return false;
             }
         }
         return true;
+    }
+
+    public Player clonePlayer() {
+        Player clonedPlayer = new Player(this.color, Raylib::LoadTexture);
+
+        for (Unit unit : this.units) {
+            if(unit.getLife() > 0) {
+                clonedPlayer.getUnits().add(unit.cloneUnit());
+            }
+        }
+
+        return clonedPlayer;
     }
 }

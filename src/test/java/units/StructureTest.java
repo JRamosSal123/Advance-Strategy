@@ -13,7 +13,7 @@ class StructureTest {
 
     @BeforeEach
     void setUp() {
-        structure = new Structure(UnitEnum.STRUCTURE, 150, 64, 96);
+        structure = new Structure(1,UnitEnum.STRUCTURE, 150, 64, 96);
     }
 
     @Test

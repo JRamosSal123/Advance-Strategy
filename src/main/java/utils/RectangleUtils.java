@@ -34,6 +34,4 @@ public class RectangleUtils {
         return (int) this.height;
     }
 
-
-
 }

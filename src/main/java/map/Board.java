@@ -1,22 +1,20 @@
 package map;
 
-import P2P.GameP2P;
 import com.raylib.Raylib;
+import core.Game;
 import core.Main;
-
+import utils.ColorEnum;
 import java.io.*;
 import java.util.*;
-
-import static com.raylib.Colors.WHITE;
 import static com.raylib.Raylib.DrawTexture;
 
 public class Board {
     private Terrain[][] map;
-    private final GameP2P gameP2P;
+    private Game game = null;
     private static final Map<String, Terrain> TERRAIN_MAP = createTerrainMap();
 
-    public Board(GameP2P gameP2P) {
-        this.gameP2P = gameP2P;
+    public Board(Game game) {
+        this.game = game;
         loadMap();
     }
 
@@ -101,7 +99,7 @@ public class Board {
 
         for(int j = 0; j <= map.length-1; j++) {
             for(int i = 0; i <= map[j].length-1; i++) {
-                DrawTexture(map[j][i].getTexture(), i*32, j*32, WHITE);
+                DrawTexture(map[j][i].getTexture(), i*32, j*32, ColorEnum.WHITE.getColorUtils().toRaylibColor());
             }
         }
 

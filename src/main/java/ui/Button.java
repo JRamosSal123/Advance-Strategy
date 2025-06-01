@@ -17,19 +17,16 @@ public class Button {
     private final ColorUtils color;
     private boolean hovered = false;
 
-    // Constructor para botón con textura
     public Button(RectangleUtils rect, ColorUtils baseColor, ColorUtils hoverColor, Texture texture, ColorUtils color) {
         this.rect = rect;
         this.baseColor = baseColor;
         this.hoverColor = hoverColor;
         this.texture = texture;
         this.color = color;
-
         this.text = null;
         this.textSize = 0;
     }
 
-    // Constructor para botón con texto
     public Button(RectangleUtils rect, ColorUtils baseColor, ColorUtils hoverColor, String text, int textSize, ColorUtils color) {
         this.rect = rect;
         this.baseColor = baseColor;
@@ -37,12 +34,11 @@ public class Button {
         this.text = text;
         this.textSize = textSize;
         this.color = color;
-
         this.texture = null;
     }
 
     public void update(Vector2 mousePos) {
-        hovered = ScreenUtils.isMouseOver(rect, mousePos);
+        hovered = ScreenUtils.isMouseOver(getRect(), mousePos);
     }
 
     public boolean isHovered() {
@@ -54,20 +50,46 @@ public class Button {
         return mousePosition != null && isHovered() && IsMouseButtonPressed(0);
     }
 
+    public ColorUtils selectedColorRect() {
+        return isHovered() ? getHoverColor() : getBaseColor();
+    }
+
     public void draw() {
-        ColorUtils currentColor = hovered ? hoverColor : baseColor;
-        DrawRectangleRounded(rect.toRaylibRectangle(), 0.5F, 100, currentColor.toRaylibColor());
+        ColorUtils currentColor = selectedColorRect();
+        DrawRectangleRounded(getRect().toRaylibRectangle(), 0.5F, 100, currentColor.toRaylibColor());
 
-        if (texture != null) {
-            DrawTexture(texture, rect.getPositionX(), rect.getPositionY(), color.toRaylibColor());
-        } else if (text != null) {
-            int fontSize = textSize; // Puedes hacer esto configurable si quieres
-            int textWidth = MeasureText(text, fontSize);
-            int textX = rect.getPositionX() + (rect.getWidth() - textWidth) / 2;
-            int textY = rect.getPositionY() + (rect.getHeight() - fontSize) / 2;
+        if (getTexture() != null) {
+            DrawTexture(getTexture(), getRect().getPositionX(), getRect().getPositionY(), getColor().toRaylibColor());
+        } else if (getText() != null) {
+            int fontSize = getTextSize();
+            int textWidth = MeasureText(getText(), fontSize);
+            int textX = getRect().getPositionX() + (getRect().getWidth() - textWidth) / 2;
+            int textY = getRect().getPositionY() + (getRect().getHeight() - fontSize) / 2;
 
-            DrawText(text, textX, textY, fontSize, color.toRaylibColor());
+            DrawText(getText(), textX, textY, fontSize, getColor().toRaylibColor());
         }
+    }
+
+    public RectangleUtils getRect() {
+        return rect;
+    }
+    public ColorUtils getBaseColor() {
+        return baseColor;
+    }
+    public ColorUtils getHoverColor() {
+        return hoverColor;
+    }
+    public Texture getTexture() {
+        return texture;
+    }
+    public String getText() {
+        return text;
+    }
+    public int getTextSize() {
+        return textSize;
+    }
+    public ColorUtils getColor() {
+        return color;
     }
 }
 

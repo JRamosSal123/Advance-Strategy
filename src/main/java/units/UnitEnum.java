@@ -1,12 +1,12 @@
 package units;
 
 public enum UnitEnum {
-    SOLDIER("Soldier", 5,10),
-    TANK("Tank", 1,5),
-    HUMVEE("Humvee", 1,5),
-    MOTORBIKE("Motorbike", 1,5),
-    ARTILLERY("Artillery",   1,5),
-    MISSILELAUNCHER("Missile_Launcher",  1,5),
+    SOLDIER("Soldier", 2,2),
+    TANK("Tank", 5,5),
+    ARTILLERY("Artillery",   3,3),
+    //HUMVEE("Humvee", 1,5),
+    //MOTORBIKE("Motorbike", 1,5),
+    //MISSILELAUNCHER("Missile_Launcher",  1,5),
     STRUCTURE("Structure",  0,0);
 
     private final String name;
